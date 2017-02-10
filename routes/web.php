@@ -16,14 +16,19 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+	Route::get('/home', 'HomeController@index');
 
-Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => 'auth'], function () {
 
-Route::get('/message', 'MessageController@index');
+	Route::get('/message', 'MessageController@index');
 
-Route::get('/new', 'MessageController@create');
-Route::post('/new', 'MessageController@store');
+	Route::get('/new', 'MessageController@create');
+	Route::post('/new', 'MessageController@store');
 
-Route::get('/edit/{id}','MessageController@edit');
-Route::post('/edit/{id}','MessageController@update');
-Route::get('/delete/{id}','MessageController@destroy');
+	Route::get('/edit/{id}','MessageController@edit');
+	Route::post('/edit/{id}','MessageController@update');
+	Route::get('/delete/{id}','MessageController@destroy');
+
+	Route::get('/profile/{id}','UserController@edit');
+	Route::post('/profile/{id}','UserController@update');
+});

@@ -6,9 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Request;
 use Illuminate\Support\Facades\DB;
-use App\Message;
+use App\User;
 
-class MessageController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,7 @@ class MessageController extends Controller
      */
     public function index()
     {
-        $data = Message::all();
-        return view('/message',['messages'=>$data]);
+        //
     }
 
     /**
@@ -28,7 +27,7 @@ class MessageController extends Controller
      */
     public function create()
     {
-        return view('/newMessage');
+        //
     }
 
     /**
@@ -39,8 +38,7 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $message = Message::create(Request::all());
-        return Redirect('message');
+        //
     }
 
     /**
@@ -62,9 +60,8 @@ class MessageController extends Controller
      */
     public function edit($id)
     {
-
-        $data = Message::find($id);
-        return view('/editMessage',['message'=>$data]);
+        $data = User::find($id);
+        return view('profile',['user'=>$data]);
     }
 
     /**
@@ -76,13 +73,15 @@ class MessageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $message = Message::find($id);
-        if(Auth::user() && Auth::user()->name == $message->author)
+        $user = User::find($id);
+        if(Auth::user() && Auth::user()->id == $user->id)
         {
-            $message->update(Request::only('content'));
-            return Redirect('message')->with('success','Message modifié');
+            $user->update(Request::all());
+
+            return Redirect('profile/'.$id)->with('success','Profil modifié');
         } else {
-            return Redirect('message')->with('error','Le message n\'a pas été modifié car vous n\'êtes pas le propriétaire');
+            return Redirect('profile/'.$id)->with('error','Le profil n\'a pas été modifié car vous n\'êtes pas le propriétaire');
+
         }
     }
 
@@ -94,8 +93,6 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        $message = Message::find($id);
-        $message->delete();
-        return Redirect('message');
+        //
     }
 }

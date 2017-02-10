@@ -15,6 +15,7 @@
 
                                 <div class="col-md-6">
                                     <textarea class="form-control" rows="5" id="content" name="content" placeholder="Write your message here..." style="resize: none;" required></textarea>
+                                    <input type="hidden" name="author" value="{{ Auth::user()->name }}">
                                 </div>
                             </div>
 
